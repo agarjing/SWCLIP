@@ -11,7 +11,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 stop_words = set(stopwords.words('english'))
 from transformers import BertModel, BertTokenizer
-device = "cuda:1" if torch.cuda.is_available() else "cpu"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 if __name__ == '__main__':
     captions = []

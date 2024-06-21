@@ -122,8 +122,7 @@ if __name__ == '__main__':
 
     # load precomputed vocabulary
     model, _ = clip.load('ViT-B/32', args.device)
-    model.load_state_dict(torch.load('/home/ZJ/code/STCLIP-Swin-detect-weight/runs'
-                                     '/i2t_detectVision_weight_optstepLR_1e6to1e9_1e2to1e5.pth'))
+    # model.load_state_dict(torch.load('/home/ZJ/code/SWCLIP/runs/*.pth'))
     args.vacab_size = model.vocab_size
     model = model.to(args.device)
 
@@ -137,10 +136,4 @@ if __name__ == '__main__':
         _, _, d = evaluate(model, 0, test_data, logger, args, True)
         logger.info('For MS-COCO 5K:')
         _, _, d = evaluate(model, 0, test_data, logger, args, False)
-        store_matrixs.append(d)
-    else:
-        logger.info('For Filckr30K:')
-        _, val_data = get_loaders(args.data_name, args.batch_size,
-                                  args.num_workers, args)
-        _, _, d = evaluate(model, 0, val_data, logger, args)
         store_matrixs.append(d)

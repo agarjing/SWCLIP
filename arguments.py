@@ -3,7 +3,7 @@ import argparse
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--log_name', default='B32_detectVision_weight_optstepLR_1e6_1e4', type=str,
+    parser.add_argument('--log_name', default='B32_detectVision_weight_optstepLR_1e6_1e3_test', type=str,
                         help='log file name')
     '''params for data'''
     parser.add_argument('--data_path', default='/home/hdu/data_ZJ',
@@ -43,7 +43,7 @@ def get_args():
                         help='The number of epochs for warmup operation.')
     parser.add_argument('--learning_rate', default=1e-6, type=float,
                         help='Initial learning rate')
-    parser.add_argument('--add_lr', default=1e-4, type=float,
+    parser.add_argument('--add_lr', default=1e-3, type=float,
                         help='Initial learning rate')
     parser.add_argument('--loss_type', default='acc', type=str,
                         help='')

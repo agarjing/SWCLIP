@@ -15,6 +15,7 @@ from tqdm import tqdm
 from evaluation import i2t, t2i
 import multiprocessing
 from mmdet.apis import init_detector
+from argparse import ArgumentParser
 
 
 def train(model, epoch, iterator, optimizer, loss_img, loss_txt, logger, length, args):
@@ -149,7 +150,7 @@ if __name__ == '__main__':
     args.vacab_size = model.vocab_size
     model = model.to(args.device)
 
-    # swin_model = init_detector(args.swin_config, args.swin_checkpoint, device=args.swin_device)
+    # swin_model = init_detector(args.swin_config, args.swin_checkpoint, device=args.device)
 
     train_data, val_data, test_data = get_loaders(args.data_name, args.batch_size,
                                                   args.num_workers, args)
@@ -182,29 +183,11 @@ if __name__ == '__main__':
 
         if train_loss < best_loss:
             best_loss = train_loss
-            filename = args.log_path + 'B32-loss_detectVision_weight_optstepLR_1e6_1e4.pth'
+            filename = args.log_path + 'B32-loss_detectVision_weight_optstepLR_1e6_1e3.pth'
             torch.save(model.state_dict(), filename)
 
         # evaluate
-        i2t_r, _, rsum = evaluate(model, epoch, val_data, logger, args)
+        _, _, rsum = evaluate(model, epoch, val_data, logger, args)
 
-        if rsum > best_rsum:
-            best_rsum = rsum
-            torch.save(model.state_dict(), './runs/B32-rsum_detectVision_weight_optstepLR_optstepLR_1e6_1e4.pth')
-
-
-    torch.save(model.state_dict(), './runs/B32-latest_model_stepLR_optstepLR_1e6_1e4.pth')
-    logger.info('latest model')
-    _, _, rsum = evaluate(model, 0, test_data, logger, args)
-
-    logger.info('loss model')
-    model.load_state_dict(
-        torch.load('/home/hdu/code_ZJ/STCLIP-detect-weight/runs/B32-loss_detectVision_weight_optstepLR_optstepLR_1e6_1e4.pth'))
-    _, _, rsum = evaluate(model, 0, test_data, logger, args)
-
-    logger.info('rsum model')
-    model.load_state_dict(
-        torch.load(
-            '/home/hdu/code_ZJ/STCLIP-detect-weight/runs/B32-rsum_detectVision_weight_optstepLR_optstepLR_1e6_1e4.pth'))
-    _, _, rsum = evaluate(model, 0, test_data, logger, args)
+    torch.save(model.state_dict(), './runs/B32-latest_model_stepLR_optstepLR_1e6_1e3.pth')
 
